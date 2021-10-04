@@ -1,0 +1,78 @@
+syntax = "proto3";
+
+package rode.v1alpha2;
+
+option go_package = "github.com/rode/proto/rode/v1alpha2";
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "rode/v1alpha2/intoto_attestation.proto";
+
+// Provenance represents a v0.1 SLSA (https://slsa.dev/) build provenance. The schema for a provenance is described by
+// the SLSA framework at https://slsa.dev/provenance/v0.1.
+message Provenance {
+  // Builder represents the identity of the service performing a build.
+  message Builder {
+    // Id is the unique identifier of the Builder. An example value from the SLSA GitHub Actions demo:
+    // https://github.com/slsa-framework/github-actions-demo/Attestations/GitHubHostedActions@v1
+    TypeURI id = 1;
+  }
+
+  // Metadata is a collection of miscellaneous properties about the build.
+  message Metadata {
+    // Completeness describes the extent to which inputs were captured for the recipe and materials.
+    message Completeness {
+      // Arguments indicates that the recipe arguments were completely captured.
+      bool arguments = 1;
+      // Environment indicates that the recipe environment field is complete.
+      bool environment = 2;
+      // Materials indicates that the described materials are complete.
+      bool materials = 3;
+    }
+
+    // BuildInvocationId is a unique identifier of a particular build attempt, with a format that will be unique to each
+    // builder. An example: https://github.com/slsa-framework/github-actions-demo/actions/runs/940146003
+    string build_invocation_id = 1;
+    // Completeness describes the extent to which inputs were captured for the recipe and materials.
+    Completeness completeness = 2;
+    // BuildStartedOn is a timestamp captured when the build first began.
+    google.protobuf.Timestamp build_started_on = 3;
+    // BuildFinishedOn is a timestamp representing when the build completed.
+    google.protobuf.Timestamp build_finished_on = 4;
+  }
+
+  // Recipe describes the build configuration. Along with materials, it should be sufficient to reproduce the build.
+  // Some recipe components may not have been fully captured, see Metadata.Completeness.
+  message Recipe {
+    // Type is a TypeURI that describes what type of recipe was performed. An example from the SLSA GitHub Actions demo:
+    // https://github.com/Attestations/GitHubActionsWorkflow@v1
+    TypeURI type = 1;
+    // DefinedInMaterial is the index in Provenance.Materials where the recipe steps are defined.
+    int32 defined_in_material = 2;
+    // EntryPoint describes the initializing step of the build, e.g., a configuration file or step. Should be constrained
+    // to prevent errors (e.g., creating the wrong type of build).
+    string entry_point = 3;
+    // Arguments represents any external inputs to the build, with a schema defined by the recipe type.
+    google.protobuf.Struct arguments = 4;
+    // Environment represents any other inputs supplied by the builder that influence the build. Useful for reproducing
+    // the build, but not expected to be part of any policy.
+    google.protobuf.Struct environment = 5;
+  }
+
+  // Material describes an artifact that was used in the build, including source code and build tools.
+  message Material {
+    // URI represents a resolvable location for the artifact.
+    ResourceURI uri = 1;
+    // Digest is a set of hashes for the material that can be used to verify the artifact fetched from the URI.
+    DigestSet digest = 2;
+  }
+
+  // Builder represents the identity of the service performing a build.
+  Builder builder = 1;
+  // Metadata is a collection of miscellaneous properties about the build.
+  Metadata metadata = 2;
+  // Recipe describes the build configuration.
+  Recipe recipe = 3;
+  // Materials is a collection of artifacts used in the build.
+  repeated Material materials = 4;
+}
