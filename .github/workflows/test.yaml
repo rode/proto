@@ -21,10 +21,15 @@ jobs:
           against: ${{ github.server_url }}/${{ github.repository }}.git#branch=main
   license:
     runs-on: ubuntu-latest
+    container: golang:1.17
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: Check License
-        uses: docker://ghcr.io/google/addlicense:v1.0.0
-        with:
-          args: "-check -ignore '**/*.yaml' ."
+      - name: Download addlicense
+        run: go install github.com/google/addlicense@v1.0.0
+      - name: Check License Headers
+        run: |
+          set -e
+          shopt -s globstar
+          addlicense -check **/*.{proto}
+        shell: bash
