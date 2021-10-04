@@ -27,4 +27,4 @@ jobs:
       - name: Check License
         uses: docker://ghcr.io/google/addlicense:v1.0.0
         with:
-          args: -check -ignore '**/*.yaml' .
+          args: "-check -ignore '**/*.yaml' ."
