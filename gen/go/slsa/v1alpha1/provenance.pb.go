@@ -18,10 +18,11 @@
 // 	protoc        v3.18.0
 // source: slsa/v1alpha1/provenance.proto
 
-package v2alpha1
+package v1alpha1
 
 import (
 	proto "github.com/golang/protobuf/proto"
+	v1alpha1 "github.com/rode/proto/intoto/attestation/v1alpha1"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	structpb "google.golang.org/protobuf/types/known/structpb"
@@ -126,7 +127,7 @@ type Provenance_Builder struct {
 
 	// Id is the unique identifier of the Builder. An example value from the SLSA GitHub Actions demo:
 	// https://github.com/slsa-framework/github-actions-demo/Attestations/GitHubHostedActions@v1
-	Id *TypeURI `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id *v1alpha1.TypeURI `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
 func (x *Provenance_Builder) Reset() {
@@ -161,7 +162,7 @@ func (*Provenance_Builder) Descriptor() ([]byte, []int) {
 	return file_slsa_v1alpha1_provenance_proto_rawDescGZIP(), []int{0, 0}
 }
 
-func (x *Provenance_Builder) GetId() *TypeURI {
+func (x *Provenance_Builder) GetId() *v1alpha1.TypeURI {
 	if x != nil {
 		return x.Id
 	}
@@ -254,7 +255,7 @@ type Provenance_Recipe struct {
 
 	// Type is a TypeURI that describes what type of recipe was performed. An example from the SLSA GitHub Actions demo:
 	// https://github.com/Attestations/GitHubActionsWorkflow@v1
-	Type *TypeURI `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
+	Type *v1alpha1.TypeURI `protobuf:"bytes,1,opt,name=type,proto3" json:"type,omitempty"`
 	// DefinedInMaterial is the index in Provenance.Materials where the recipe steps are defined.
 	DefinedInMaterial int32 `protobuf:"varint,2,opt,name=defined_in_material,json=definedInMaterial,proto3" json:"defined_in_material,omitempty"`
 	// EntryPoint describes the initializing step of the build, e.g., a configuration file or step. Should be constrained
@@ -299,7 +300,7 @@ func (*Provenance_Recipe) Descriptor() ([]byte, []int) {
 	return file_slsa_v1alpha1_provenance_proto_rawDescGZIP(), []int{0, 2}
 }
 
-func (x *Provenance_Recipe) GetType() *TypeURI {
+func (x *Provenance_Recipe) GetType() *v1alpha1.TypeURI {
 	if x != nil {
 		return x.Type
 	}
@@ -341,9 +342,9 @@ type Provenance_Material struct {
 	unknownFields protoimpl.UnknownFields
 
 	// URI represents a resolvable location for the artifact.
-	Uri *ResourceURI `protobuf:"bytes,1,opt,name=uri,proto3" json:"uri,omitempty"`
+	Uri *v1alpha1.ResourceURI `protobuf:"bytes,1,opt,name=uri,proto3" json:"uri,omitempty"`
 	// Digest is a set of hashes for the material that can be used to verify the artifact fetched from the URI.
-	Digest *DigestSet `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
+	Digest *v1alpha1.DigestSet `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
 }
 
 func (x *Provenance_Material) Reset() {
@@ -378,14 +379,14 @@ func (*Provenance_Material) Descriptor() ([]byte, []int) {
 	return file_slsa_v1alpha1_provenance_proto_rawDescGZIP(), []int{0, 3}
 }
 
-func (x *Provenance_Material) GetUri() *ResourceURI {
+func (x *Provenance_Material) GetUri() *v1alpha1.ResourceURI {
 	if x != nil {
 		return x.Uri
 	}
 	return nil
 }
 
-func (x *Provenance_Material) GetDigest() *DigestSet {
+func (x *Provenance_Material) GetDigest() *v1alpha1.DigestSet {
 	if x != nil {
 		return x.Digest
 	}
@@ -543,7 +544,7 @@ var file_slsa_v1alpha1_provenance_proto_rawDesc = []byte{
 	0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2e, 0x44, 0x69,
 	0x67, 0x65, 0x73, 0x74, 0x53, 0x65, 0x74, 0x52, 0x06, 0x64, 0x69, 0x67, 0x65, 0x73, 0x74, 0x42,
 	0x25, 0x5a, 0x23, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x6f,
-	0x64, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x72, 0x6f, 0x64, 0x65, 0x2f, 0x76, 0x32,
+	0x64, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x73, 0x6c, 0x73, 0x61, 0x2f, 0x76, 0x31,
 	0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x33,
 }
 
@@ -567,11 +568,11 @@ var file_slsa_v1alpha1_provenance_proto_goTypes = []interface{}{
 	(*Provenance_Recipe)(nil),                // 3: slsa.v1alpha1.Provenance.Recipe
 	(*Provenance_Material)(nil),              // 4: slsa.v1alpha1.Provenance.Material
 	(*Provenance_Metadata_Completeness)(nil), // 5: slsa.v1alpha1.Provenance.Metadata.Completeness
-	(*TypeURI)(nil),                          // 6: intoto.attestation.v1alpha1.TypeURI
+	(*v1alpha1.TypeURI)(nil),                 // 6: intoto.attestation.v1alpha1.TypeURI
 	(*timestamppb.Timestamp)(nil),            // 7: google.protobuf.Timestamp
 	(*structpb.Struct)(nil),                  // 8: google.protobuf.Struct
-	(*ResourceURI)(nil),                      // 9: intoto.attestation.v1alpha1.ResourceURI
-	(*DigestSet)(nil),                        // 10: intoto.attestation.v1alpha1.DigestSet
+	(*v1alpha1.ResourceURI)(nil),             // 9: intoto.attestation.v1alpha1.ResourceURI
+	(*v1alpha1.DigestSet)(nil),               // 10: intoto.attestation.v1alpha1.DigestSet
 }
 var file_slsa_v1alpha1_provenance_proto_depIdxs = []int32{
 	1,  // 0: slsa.v1alpha1.Provenance.builder:type_name -> slsa.v1alpha1.Provenance.Builder
@@ -599,7 +600,6 @@ func file_slsa_v1alpha1_provenance_proto_init() {
 	if File_slsa_v1alpha1_provenance_proto != nil {
 		return
 	}
-	file_intoto_attestation_v1alpha1_types_proto_init()
 	if !protoimpl.UnsafeEnabled {
 		file_slsa_v1alpha1_provenance_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
 			switch v := v.(*Provenance); i {
