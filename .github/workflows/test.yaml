@@ -1,0 +1,35 @@
+name: test
+
+on:
+  push:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Install Buf
+        uses: bufbuild/buf-setup-action@v0.5.0
+      - name: Lint Protobufs
+        uses: bufbuild/buf-lint-action@v1
+      - name: Check Breaking Changes
+        if: github.ref != 'refs/heads/main'
+        uses: bufbuild/buf-breaking-action@v1
+        continue-on-error: true
+        with:
+          against: ${{ github.server_url }}/${{ github.repository }}.git#branch=main
+  license:
+    runs-on: ubuntu-latest
+    container: golang:1.17
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Download addlicense
+        run: go install github.com/google/addlicense@v1.0.0
+      - name: Check License Headers
+        run: |
+          set -e
+          shopt -s globstar
+          addlicense -check **/*.{proto}
+        shell: bash

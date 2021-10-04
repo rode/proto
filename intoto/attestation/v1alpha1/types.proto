@@ -1,0 +1,44 @@
+// Copyright 2021 The Rode Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+syntax = "proto3";
+
+package intoto.attestation.v1alpha1;
+
+option go_package = "github.com/rode/proto/intoto/attestation/v1alpha1";
+
+// TypeURI is a uniform resource locator that should resolve to a human-readable description of the type to which it refers.
+// See the in-toto attestation description for more information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#TypeURI
+message TypeURI {
+  // Value is the string representing the type URI.
+  string value = 1;
+}
+
+// ResourceURI is a uniform resource locator that should resolve to an artifact. ResourceURIs should use the
+// package URL (pkg:) or SPDX download location format.
+// More information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#ResourceURI
+message ResourceURI {
+  // Value is the string representing the resource URI.
+  string value = 1;
+}
+
+// DigestSet is mapping from hash names to digests of an artifact.
+// More information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet
+message DigestSet {
+  // Sha256 is the sha256 hash of a file. It's the recommended baseline for maximum compatibility.
+  string sha256 = 1;
+  // The in-toto attestation spec describes other pre-defined algorithms, these fields are set aside for those
+  // as we need to implement them.
+  reserved 2 to 50;
+}
