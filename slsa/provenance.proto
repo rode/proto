@@ -20,7 +20,7 @@ option go_package = "github.com/rode/proto/rode/v1alpha2";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
-import "rode/v1alpha2/intoto_attestation.proto";
+import "intoto/attestation/types.proto";
 
 // Provenance represents a v0.1 SLSA (https://slsa.dev/) build provenance. The schema for a provenance is described by
 // the SLSA framework at https://slsa.dev/provenance/v0.1.
@@ -29,7 +29,7 @@ message Provenance {
   message Builder {
     // Id is the unique identifier of the Builder. An example value from the SLSA GitHub Actions demo:
     // https://github.com/slsa-framework/github-actions-demo/Attestations/GitHubHostedActions@v1
-    TypeURI id = 1;
+    intoto.attestation.TypeURI id = 1;
   }
 
   // Metadata is a collection of miscellaneous properties about the build.
@@ -60,7 +60,7 @@ message Provenance {
   message Recipe {
     // Type is a TypeURI that describes what type of recipe was performed. An example from the SLSA GitHub Actions demo:
     // https://github.com/Attestations/GitHubActionsWorkflow@v1
-    TypeURI type = 1;
+    intoto.attestation.TypeURI type = 1;
     // DefinedInMaterial is the index in Provenance.Materials where the recipe steps are defined.
     int32 defined_in_material = 2;
     // EntryPoint describes the initializing step of the build, e.g., a configuration file or step. Should be constrained
@@ -76,9 +76,9 @@ message Provenance {
   // Material describes an artifact that was used in the build, including source code and build tools.
   message Material {
     // URI represents a resolvable location for the artifact.
-    ResourceURI uri = 1;
+    intoto.attestation.ResourceURI uri = 1;
     // Digest is a set of hashes for the material that can be used to verify the artifact fetched from the URI.
-    DigestSet digest = 2;
+    intoto.attestation.DigestSet digest = 2;
   }
 
   // Builder represents the identity of the service performing a build.

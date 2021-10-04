@@ -14,7 +14,7 @@
 
 syntax = "proto3";
 
-package rode.v1alpha2;
+package intoto.attestation;
 
 option go_package = "github.com/rode/proto/rode/v1alpha2";
 
