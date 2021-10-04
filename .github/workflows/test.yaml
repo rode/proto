@@ -24,15 +24,7 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - name: List Files
-        id: ls
-        run: |
-          set -e
-          shopt -s globstar
-
-          protos=$(ls **/*.proto)
-          echo "::set-output name=files::${protos}"
       - name: Check License
         uses: docker://ghcr.io/google/addlicense:v1.0.0
         with:
-          args: -check ${{ steps.ls.outputs.files }}
+          args: -check -ignore '**/*.yaml' .
