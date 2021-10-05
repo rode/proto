@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package slsa.v1alpha1;
 
-option go_package = "github.com/rode/proto/slsa/v1alpha1";
+option go_package = "github.com/rode/proto/gen/go/slsa/v1alpha1";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";

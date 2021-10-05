@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package intoto.attestation.v1alpha1;
 
-option go_package = "github.com/rode/proto/intoto/attestation/v1alpha1";
+option go_package = "github.com/rode/proto/gen/go/intoto/attestation/v1alpha1";
 
 import "intoto/attestation/v1alpha1/types.proto";
 import "google/protobuf/struct.proto";

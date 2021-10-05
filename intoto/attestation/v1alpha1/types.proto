@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package intoto.attestation.v1alpha1;
 
-option go_package = "github.com/rode/proto/intoto/attestation/v1alpha1";
+option go_package = "github.com/rode/proto/gen/go/intoto/attestation/v1alpha1";
 
 // TypeURI is a uniform resource locator that should resolve to a human-readable description of the type to which it refers.
 // See the in-toto attestation description for more information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#TypeURI
