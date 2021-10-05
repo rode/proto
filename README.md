@@ -1,5 +1,7 @@
 # proto
 
+[![test](https://github.com/rode/proto/actions/workflows/test.yaml/badge.svg)](https://github.com/rode/proto/actions/workflows/test.yaml)
+
 Experimental Rode protobufs. 
 
 ## Development
