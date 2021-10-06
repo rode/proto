@@ -18,17 +18,33 @@ package rode.v2alpha1;
 
 option go_package = "github.com/rode/proto/rode/v2alpha1";
 
-import "intoto/attestation/v1alpha1/statement.proto";
+import "slsa/v1alpha1/provenance.proto";
 import "google/api/annotations.proto";
 
-message CreateProvenanceRequest {
-  string resource_uri = 1;
+// CreateStatementRequest
+message CreateStatementRequest {
+  // Statement is any attestation. Only provenance is implemented currently.
+  oneof statement {
+    // Provenance is a SLSA build provenance statement.
+    slsa.v1alpha1.ProvenanceStatement provenance = 1;
+  }
 }
 
+// CreateStatementResponse wraps the new statement.
+message CreateStatementResponse {
+  // Statement is any attestation. Only provenance is implemented currently.
+  oneof statement {
+    // Provenance is a SLSA build provenance statement.
+    slsa.v1alpha1.ProvenanceStatement provenance = 1;
+  }
+}
+
+// RodeService contains RPCs for working with attestation Statements.
 service RodeService {
-  rpc CreateProvenance(CreateProvenanceRequest) returns (intoto.attestation.v1alpha1.Statement) {
+  // CreateStatement records any statements sent from externals sources.
+  rpc CreateStatement(CreateStatementRequest) returns (CreateStatementResponse) {
     option (google.api.http) = {
-      post: "/v2alpha1/provenance"
+      post: "/v2alpha1/statements"
       body: "*"
     };
   }

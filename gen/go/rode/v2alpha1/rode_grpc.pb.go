@@ -4,7 +4,6 @@ package v2alpha1
 
 import (
 	context "context"
-	v1alpha1 "github.com/rode/proto/gen/go/intoto/attestation/v1alpha1"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -18,7 +17,8 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type RodeServiceClient interface {
-	CreateProvenance(ctx context.Context, in *CreateProvenanceRequest, opts ...grpc.CallOption) (*v1alpha1.Statement, error)
+	// CreateStatement records any statements sent from externals sources.
+	CreateStatement(ctx context.Context, in *CreateStatementRequest, opts ...grpc.CallOption) (*CreateStatementResponse, error)
 }
 
 type rodeServiceClient struct {
@@ -29,9 +29,9 @@ func NewRodeServiceClient(cc grpc.ClientConnInterface) RodeServiceClient {
 	return &rodeServiceClient{cc}
 }
 
-func (c *rodeServiceClient) CreateProvenance(ctx context.Context, in *CreateProvenanceRequest, opts ...grpc.CallOption) (*v1alpha1.Statement, error) {
-	out := new(v1alpha1.Statement)
-	err := c.cc.Invoke(ctx, "/rode.v2alpha1.RodeService/CreateProvenance", in, out, opts...)
+func (c *rodeServiceClient) CreateStatement(ctx context.Context, in *CreateStatementRequest, opts ...grpc.CallOption) (*CreateStatementResponse, error) {
+	out := new(CreateStatementResponse)
+	err := c.cc.Invoke(ctx, "/rode.v2alpha1.RodeService/CreateStatement", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -42,15 +42,16 @@ func (c *rodeServiceClient) CreateProvenance(ctx context.Context, in *CreateProv
 // All implementations should embed UnimplementedRodeServiceServer
 // for forward compatibility
 type RodeServiceServer interface {
-	CreateProvenance(context.Context, *CreateProvenanceRequest) (*v1alpha1.Statement, error)
+	// CreateStatement records any statements sent from externals sources.
+	CreateStatement(context.Context, *CreateStatementRequest) (*CreateStatementResponse, error)
 }
 
 // UnimplementedRodeServiceServer should be embedded to have forward compatible implementations.
 type UnimplementedRodeServiceServer struct {
 }
 
-func (UnimplementedRodeServiceServer) CreateProvenance(context.Context, *CreateProvenanceRequest) (*v1alpha1.Statement, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method CreateProvenance not implemented")
+func (UnimplementedRodeServiceServer) CreateStatement(context.Context, *CreateStatementRequest) (*CreateStatementResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateStatement not implemented")
 }
 
 // UnsafeRodeServiceServer may be embedded to opt out of forward compatibility for this service.
@@ -64,20 +65,20 @@ func RegisterRodeServiceServer(s grpc.ServiceRegistrar, srv RodeServiceServer) {
 	s.RegisterService(&_RodeService_serviceDesc, srv)
 }
 
-func _RodeService_CreateProvenance_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(CreateProvenanceRequest)
+func _RodeService_CreateStatement_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateStatementRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(RodeServiceServer).CreateProvenance(ctx, in)
+		return srv.(RodeServiceServer).CreateStatement(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/rode.v2alpha1.RodeService/CreateProvenance",
+		FullMethod: "/rode.v2alpha1.RodeService/CreateStatement",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(RodeServiceServer).CreateProvenance(ctx, req.(*CreateProvenanceRequest))
+		return srv.(RodeServiceServer).CreateStatement(ctx, req.(*CreateStatementRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -87,8 +88,8 @@ var _RodeService_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*RodeServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "CreateProvenance",
-			Handler:    _RodeService_CreateProvenance_Handler,
+			MethodName: "CreateStatement",
+			Handler:    _RodeService_CreateStatement_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
