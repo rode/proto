@@ -39,107 +39,6 @@ const (
 // of the legacy proto package is being used.
 const _ = proto.ProtoPackageIsVersion4
 
-// TypeURI is a uniform resource locator that should resolve to a human-readable description of the type to which it refers.
-// See the in-toto attestation description for more information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#TypeURI
-type TypeURI struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// Value is the string representing the type URI.
-	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
-}
-
-func (x *TypeURI) Reset() {
-	*x = TypeURI{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[0]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *TypeURI) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*TypeURI) ProtoMessage() {}
-
-func (x *TypeURI) ProtoReflect() protoreflect.Message {
-	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[0]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use TypeURI.ProtoReflect.Descriptor instead.
-func (*TypeURI) Descriptor() ([]byte, []int) {
-	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{0}
-}
-
-func (x *TypeURI) GetValue() string {
-	if x != nil {
-		return x.Value
-	}
-	return ""
-}
-
-// ResourceURI is a uniform resource locator that should resolve to an artifact. ResourceURIs should use the
-// package URL (pkg:) or SPDX download location format.
-// More information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#ResourceURI
-type ResourceURI struct {
-	state         protoimpl.MessageState
-	sizeCache     protoimpl.SizeCache
-	unknownFields protoimpl.UnknownFields
-
-	// Value is the string representing the resource URI.
-	Value string `protobuf:"bytes,1,opt,name=value,proto3" json:"value,omitempty"`
-}
-
-func (x *ResourceURI) Reset() {
-	*x = ResourceURI{}
-	if protoimpl.UnsafeEnabled {
-		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[1]
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		ms.StoreMessageInfo(mi)
-	}
-}
-
-func (x *ResourceURI) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*ResourceURI) ProtoMessage() {}
-
-func (x *ResourceURI) ProtoReflect() protoreflect.Message {
-	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[1]
-	if protoimpl.UnsafeEnabled && x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use ResourceURI.ProtoReflect.Descriptor instead.
-func (*ResourceURI) Descriptor() ([]byte, []int) {
-	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{1}
-}
-
-func (x *ResourceURI) GetValue() string {
-	if x != nil {
-		return x.Value
-	}
-	return ""
-}
-
 // DigestSet is mapping from hash names to digests of an artifact.
 // More information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet
 type DigestSet struct {
@@ -149,12 +48,14 @@ type DigestSet struct {
 
 	// Sha256 is the sha256 hash of a file. It's the recommended baseline for maximum compatibility.
 	Sha256 string `protobuf:"bytes,1,opt,name=sha256,proto3" json:"sha256,omitempty"`
+	// Sha1 is in the set to allow for references to Git commits.
+	Sha1 string `protobuf:"bytes,2,opt,name=sha1,proto3" json:"sha1,omitempty"`
 }
 
 func (x *DigestSet) Reset() {
 	*x = DigestSet{}
 	if protoimpl.UnsafeEnabled {
-		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[2]
+		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[0]
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		ms.StoreMessageInfo(mi)
 	}
@@ -167,7 +68,7 @@ func (x *DigestSet) String() string {
 func (*DigestSet) ProtoMessage() {}
 
 func (x *DigestSet) ProtoReflect() protoreflect.Message {
-	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[2]
+	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[0]
 	if protoimpl.UnsafeEnabled && x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -180,12 +81,193 @@ func (x *DigestSet) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DigestSet.ProtoReflect.Descriptor instead.
 func (*DigestSet) Descriptor() ([]byte, []int) {
-	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{2}
+	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *DigestSet) GetSha256() string {
 	if x != nil {
 		return x.Sha256
+	}
+	return ""
+}
+
+func (x *DigestSet) GetSha1() string {
+	if x != nil {
+		return x.Sha1
+	}
+	return ""
+}
+
+// A Subject is any software artifact.
+type Subject struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Name is a stable identifier for the artifact. An underscore can be used if the name isn't meaningful.
+	Name string `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	// Digest is a set of hashes for the artifact.
+	Digest *DigestSet `protobuf:"bytes,2,opt,name=digest,proto3" json:"digest,omitempty"`
+}
+
+func (x *Subject) Reset() {
+	*x = Subject{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[1]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Subject) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Subject) ProtoMessage() {}
+
+func (x *Subject) ProtoReflect() protoreflect.Message {
+	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[1]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Subject.ProtoReflect.Descriptor instead.
+func (*Subject) Descriptor() ([]byte, []int) {
+	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *Subject) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *Subject) GetDigest() *DigestSet {
+	if x != nil {
+		return x.Digest
+	}
+	return nil
+}
+
+// Envelope wraps a base64-encoded Statement and one or more signatures.
+type Envelope struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// PayloadType describes the payload encoding. It should be set to application/vnd.in-toto+json.
+	PayloadType string `protobuf:"bytes,1,opt,name=payload_type,json=payloadType,proto3" json:"payload_type,omitempty"`
+	// Payload is the base64-encoded Statement.
+	Payload string `protobuf:"bytes,2,opt,name=payload,proto3" json:"payload,omitempty"`
+	// Signatures should include at least one signature of the payload.
+	Signatures []*Envelope_Signature `protobuf:"bytes,3,rep,name=signatures,proto3" json:"signatures,omitempty"`
+}
+
+func (x *Envelope) Reset() {
+	*x = Envelope{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[2]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Envelope) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Envelope) ProtoMessage() {}
+
+func (x *Envelope) ProtoReflect() protoreflect.Message {
+	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[2]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Envelope.ProtoReflect.Descriptor instead.
+func (*Envelope) Descriptor() ([]byte, []int) {
+	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *Envelope) GetPayloadType() string {
+	if x != nil {
+		return x.PayloadType
+	}
+	return ""
+}
+
+func (x *Envelope) GetPayload() string {
+	if x != nil {
+		return x.Payload
+	}
+	return ""
+}
+
+func (x *Envelope) GetSignatures() []*Envelope_Signature {
+	if x != nil {
+		return x.Signatures
+	}
+	return nil
+}
+
+// Signature is a DSSE-formatted (https://github.com/secure-systems-lab/dsse) signature
+type Envelope_Signature struct {
+	state         protoimpl.MessageState
+	sizeCache     protoimpl.SizeCache
+	unknownFields protoimpl.UnknownFields
+
+	// Sig is the base64-encoded signature
+	Sig string `protobuf:"bytes,1,opt,name=sig,proto3" json:"sig,omitempty"`
+}
+
+func (x *Envelope_Signature) Reset() {
+	*x = Envelope_Signature{}
+	if protoimpl.UnsafeEnabled {
+		mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[3]
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		ms.StoreMessageInfo(mi)
+	}
+}
+
+func (x *Envelope_Signature) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Envelope_Signature) ProtoMessage() {}
+
+func (x *Envelope_Signature) ProtoReflect() protoreflect.Message {
+	mi := &file_intoto_attestation_v1alpha1_types_proto_msgTypes[3]
+	if protoimpl.UnsafeEnabled && x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Envelope_Signature.ProtoReflect.Descriptor instead.
+func (*Envelope_Signature) Descriptor() ([]byte, []int) {
+	return file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP(), []int{2, 0}
+}
+
+func (x *Envelope_Signature) GetSig() string {
+	if x != nil {
+		return x.Sig
 	}
 	return ""
 }
@@ -197,18 +279,33 @@ var file_intoto_attestation_v1alpha1_types_proto_rawDesc = []byte{
 	0x74, 0x69, 0x6f, 0x6e, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x2f, 0x74, 0x79,
 	0x70, 0x65, 0x73, 0x2e, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x12, 0x1b, 0x69, 0x6e, 0x74, 0x6f, 0x74,
 	0x6f, 0x2e, 0x61, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31,
-	0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x22, 0x1f, 0x0a, 0x07, 0x54, 0x79, 0x70, 0x65, 0x55, 0x52,
-	0x49, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09,
-	0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x23, 0x0a, 0x0b, 0x52, 0x65, 0x73, 0x6f, 0x75,
-	0x72, 0x63, 0x65, 0x55, 0x52, 0x49, 0x12, 0x14, 0x0a, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x18,
-	0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x05, 0x76, 0x61, 0x6c, 0x75, 0x65, 0x22, 0x29, 0x0a, 0x09,
-	0x44, 0x69, 0x67, 0x65, 0x73, 0x74, 0x53, 0x65, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x68, 0x61,
-	0x32, 0x35, 0x36, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x68, 0x61, 0x32, 0x35,
-	0x36, 0x4a, 0x04, 0x08, 0x02, 0x10, 0x33, 0x42, 0x33, 0x5a, 0x31, 0x67, 0x69, 0x74, 0x68, 0x75,
-	0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x6f, 0x64, 0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f,
-	0x2f, 0x69, 0x6e, 0x74, 0x6f, 0x74, 0x6f, 0x2f, 0x61, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74,
-	0x69, 0x6f, 0x6e, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72,
-	0x6f, 0x74, 0x6f, 0x33,
+	0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x22, 0x3d, 0x0a, 0x09, 0x44, 0x69, 0x67, 0x65, 0x73, 0x74,
+	0x53, 0x65, 0x74, 0x12, 0x16, 0x0a, 0x06, 0x73, 0x68, 0x61, 0x32, 0x35, 0x36, 0x18, 0x01, 0x20,
+	0x01, 0x28, 0x09, 0x52, 0x06, 0x73, 0x68, 0x61, 0x32, 0x35, 0x36, 0x12, 0x12, 0x0a, 0x04, 0x73,
+	0x68, 0x61, 0x31, 0x18, 0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04, 0x73, 0x68, 0x61, 0x31, 0x4a,
+	0x04, 0x08, 0x03, 0x10, 0x33, 0x22, 0x5d, 0x0a, 0x07, 0x53, 0x75, 0x62, 0x6a, 0x65, 0x63, 0x74,
+	0x12, 0x12, 0x0a, 0x04, 0x6e, 0x61, 0x6d, 0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x04,
+	0x6e, 0x61, 0x6d, 0x65, 0x12, 0x3e, 0x0a, 0x06, 0x64, 0x69, 0x67, 0x65, 0x73, 0x74, 0x18, 0x02,
+	0x20, 0x01, 0x28, 0x0b, 0x32, 0x26, 0x2e, 0x69, 0x6e, 0x74, 0x6f, 0x74, 0x6f, 0x2e, 0x61, 0x74,
+	0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68,
+	0x61, 0x31, 0x2e, 0x44, 0x69, 0x67, 0x65, 0x73, 0x74, 0x53, 0x65, 0x74, 0x52, 0x06, 0x64, 0x69,
+	0x67, 0x65, 0x73, 0x74, 0x22, 0xb7, 0x01, 0x0a, 0x08, 0x45, 0x6e, 0x76, 0x65, 0x6c, 0x6f, 0x70,
+	0x65, 0x12, 0x21, 0x0a, 0x0c, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x5f, 0x74, 0x79, 0x70,
+	0x65, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x0b, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64,
+	0x54, 0x79, 0x70, 0x65, 0x12, 0x18, 0x0a, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x18,
+	0x02, 0x20, 0x01, 0x28, 0x09, 0x52, 0x07, 0x70, 0x61, 0x79, 0x6c, 0x6f, 0x61, 0x64, 0x12, 0x4f,
+	0x0a, 0x0a, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x73, 0x18, 0x03, 0x20, 0x03,
+	0x28, 0x0b, 0x32, 0x2f, 0x2e, 0x69, 0x6e, 0x74, 0x6f, 0x74, 0x6f, 0x2e, 0x61, 0x74, 0x74, 0x65,
+	0x73, 0x74, 0x61, 0x74, 0x69, 0x6f, 0x6e, 0x2e, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31,
+	0x2e, 0x45, 0x6e, 0x76, 0x65, 0x6c, 0x6f, 0x70, 0x65, 0x2e, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74,
+	0x75, 0x72, 0x65, 0x52, 0x0a, 0x73, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x73, 0x1a,
+	0x1d, 0x0a, 0x09, 0x53, 0x69, 0x67, 0x6e, 0x61, 0x74, 0x75, 0x72, 0x65, 0x12, 0x10, 0x0a, 0x03,
+	0x73, 0x69, 0x67, 0x18, 0x01, 0x20, 0x01, 0x28, 0x09, 0x52, 0x03, 0x73, 0x69, 0x67, 0x42, 0x3a,
+	0x5a, 0x38, 0x67, 0x69, 0x74, 0x68, 0x75, 0x62, 0x2e, 0x63, 0x6f, 0x6d, 0x2f, 0x72, 0x6f, 0x64,
+	0x65, 0x2f, 0x70, 0x72, 0x6f, 0x74, 0x6f, 0x2f, 0x67, 0x65, 0x6e, 0x2f, 0x67, 0x6f, 0x2f, 0x69,
+	0x6e, 0x74, 0x6f, 0x74, 0x6f, 0x2f, 0x61, 0x74, 0x74, 0x65, 0x73, 0x74, 0x61, 0x74, 0x69, 0x6f,
+	0x6e, 0x2f, 0x76, 0x31, 0x61, 0x6c, 0x70, 0x68, 0x61, 0x31, 0x62, 0x06, 0x70, 0x72, 0x6f, 0x74,
+	0x6f, 0x33,
 }
 
 var (
@@ -223,18 +320,21 @@ func file_intoto_attestation_v1alpha1_types_proto_rawDescGZIP() []byte {
 	return file_intoto_attestation_v1alpha1_types_proto_rawDescData
 }
 
-var file_intoto_attestation_v1alpha1_types_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_intoto_attestation_v1alpha1_types_proto_msgTypes = make([]protoimpl.MessageInfo, 4)
 var file_intoto_attestation_v1alpha1_types_proto_goTypes = []interface{}{
-	(*TypeURI)(nil),     // 0: intoto.attestation.v1alpha1.TypeURI
-	(*ResourceURI)(nil), // 1: intoto.attestation.v1alpha1.ResourceURI
-	(*DigestSet)(nil),   // 2: intoto.attestation.v1alpha1.DigestSet
+	(*DigestSet)(nil),          // 0: intoto.attestation.v1alpha1.DigestSet
+	(*Subject)(nil),            // 1: intoto.attestation.v1alpha1.Subject
+	(*Envelope)(nil),           // 2: intoto.attestation.v1alpha1.Envelope
+	(*Envelope_Signature)(nil), // 3: intoto.attestation.v1alpha1.Envelope.Signature
 }
 var file_intoto_attestation_v1alpha1_types_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0, // 0: intoto.attestation.v1alpha1.Subject.digest:type_name -> intoto.attestation.v1alpha1.DigestSet
+	3, // 1: intoto.attestation.v1alpha1.Envelope.signatures:type_name -> intoto.attestation.v1alpha1.Envelope.Signature
+	2, // [2:2] is the sub-list for method output_type
+	2, // [2:2] is the sub-list for method input_type
+	2, // [2:2] is the sub-list for extension type_name
+	2, // [2:2] is the sub-list for extension extendee
+	0, // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_intoto_attestation_v1alpha1_types_proto_init() }
@@ -244,7 +344,7 @@ func file_intoto_attestation_v1alpha1_types_proto_init() {
 	}
 	if !protoimpl.UnsafeEnabled {
 		file_intoto_attestation_v1alpha1_types_proto_msgTypes[0].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*TypeURI); i {
+			switch v := v.(*DigestSet); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -256,7 +356,7 @@ func file_intoto_attestation_v1alpha1_types_proto_init() {
 			}
 		}
 		file_intoto_attestation_v1alpha1_types_proto_msgTypes[1].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*ResourceURI); i {
+			switch v := v.(*Subject); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -268,7 +368,19 @@ func file_intoto_attestation_v1alpha1_types_proto_init() {
 			}
 		}
 		file_intoto_attestation_v1alpha1_types_proto_msgTypes[2].Exporter = func(v interface{}, i int) interface{} {
-			switch v := v.(*DigestSet); i {
+			switch v := v.(*Envelope); i {
+			case 0:
+				return &v.state
+			case 1:
+				return &v.sizeCache
+			case 2:
+				return &v.unknownFields
+			default:
+				return nil
+			}
+		}
+		file_intoto_attestation_v1alpha1_types_proto_msgTypes[3].Exporter = func(v interface{}, i int) interface{} {
+			switch v := v.(*Envelope_Signature); i {
 			case 0:
 				return &v.state
 			case 1:
@@ -286,7 +398,7 @@ func file_intoto_attestation_v1alpha1_types_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: file_intoto_attestation_v1alpha1_types_proto_rawDesc,
 			NumEnums:      0,
-			NumMessages:   3,
+			NumMessages:   4,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

@@ -16,7 +16,7 @@ syntax = "proto3";
 
 package slsa.v1alpha1;
 
-option go_package = "github.com/rode/proto/slsa/v1alpha1";
+option go_package = "github.com/rode/proto/gen/go/slsa/v1alpha1";
 
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/struct.proto";
@@ -29,7 +29,7 @@ message Provenance {
   message Builder {
     // Id is the unique identifier of the Builder. An example value from the SLSA GitHub Actions demo:
     // https://github.com/slsa-framework/github-actions-demo/Attestations/GitHubHostedActions@v1
-    intoto.attestation.v1alpha1.TypeURI id = 1;
+    string id = 1;
   }
 
   // Metadata is a collection of miscellaneous properties about the build.
@@ -53,6 +53,8 @@ message Provenance {
     google.protobuf.Timestamp build_started_on = 3;
     // BuildFinishedOn is a timestamp representing when the build completed.
     google.protobuf.Timestamp build_finished_on = 4;
+    // Reproducible indicates that the materials and recipe can produce a bit-for-bit identical artifact.
+    bool reproducible = 5;
   }
 
   // Recipe describes the build configuration. Along with materials, it should be sufficient to reproduce the build.
@@ -60,7 +62,7 @@ message Provenance {
   message Recipe {
     // Type is a TypeURI that describes what type of recipe was performed. An example from the SLSA GitHub Actions demo:
     // https://github.com/Attestations/GitHubActionsWorkflow@v1
-    intoto.attestation.v1alpha1.TypeURI type = 1;
+    string type = 1;
     // DefinedInMaterial is the index in Provenance.Materials where the recipe steps are defined.
     int32 defined_in_material = 2;
     // EntryPoint describes the initializing step of the build, e.g., a configuration file or step. Should be constrained
@@ -76,7 +78,7 @@ message Provenance {
   // Material describes an artifact that was used in the build, including source code and build tools.
   message Material {
     // URI represents a resolvable location for the artifact.
-    intoto.attestation.v1alpha1.ResourceURI uri = 1;
+    string uri = 1;
     // Digest is a set of hashes for the material that can be used to verify the artifact fetched from the URI.
     intoto.attestation.v1alpha1.DigestSet digest = 2;
   }
@@ -89,4 +91,17 @@ message Provenance {
   Recipe recipe = 3;
   // Materials is a collection of artifacts used in the build.
   repeated Material materials = 4;
+}
+
+// A ProvenanceStatement ties together a subject, a provenance, and an attestation.
+message ProvenanceStatement {
+  // Type indicates the Statement schema version.
+  string type = 1;
+  // Subject is a list of software artifacts and their digests.
+  repeated intoto.attestation.v1alpha1.Subject subject = 2;
+  // PredicateType is a URI that indicates the schema for the Predicate.
+  // For a SLSA provenance, the value is https://slsa.dev/provenance/v0.1
+  string predicate_type = 3;
+  // The Predicate contains arbitrary information about the subject, with a schema described by the PredicateType.
+  slsa.v1alpha1.Provenance predicate = 4;
 }

@@ -16,29 +16,40 @@ syntax = "proto3";
 
 package intoto.attestation.v1alpha1;
 
-option go_package = "github.com/rode/proto/intoto/attestation/v1alpha1";
-
-// TypeURI is a uniform resource locator that should resolve to a human-readable description of the type to which it refers.
-// See the in-toto attestation description for more information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#TypeURI
-message TypeURI {
-  // Value is the string representing the type URI.
-  string value = 1;
-}
-
-// ResourceURI is a uniform resource locator that should resolve to an artifact. ResourceURIs should use the
-// package URL (pkg:) or SPDX download location format.
-// More information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#ResourceURI
-message ResourceURI {
-  // Value is the string representing the resource URI.
-  string value = 1;
-}
+option go_package = "github.com/rode/proto/gen/go/intoto/attestation/v1alpha1";
 
 // DigestSet is mapping from hash names to digests of an artifact.
 // More information: https://github.com/in-toto/attestation/blob/main/spec/field_types.md#DigestSet
 message DigestSet {
   // Sha256 is the sha256 hash of a file. It's the recommended baseline for maximum compatibility.
   string sha256 = 1;
+  // Sha1 is in the set to allow for references to Git commits.
+  string sha1 = 2;
   // The in-toto attestation spec describes other pre-defined algorithms, these fields are set aside for those
   // as we need to implement them.
-  reserved 2 to 50;
+  reserved 3 to 50;
+}
+
+// A Subject is any software artifact.
+message Subject {
+  // Name is a stable identifier for the artifact. An underscore can be used if the name isn't meaningful.
+  string name = 1;
+  // Digest is a set of hashes for the artifact.
+  intoto.attestation.v1alpha1.DigestSet digest = 2;
+}
+
+// Envelope wraps a base64-encoded Statement and one or more signatures.
+message Envelope {
+  // Signature is a DSSE-formatted (https://github.com/secure-systems-lab/dsse) signature
+  message Signature {
+    // Sig is the base64-encoded signature
+    string sig = 1;
+  }
+
+  // PayloadType describes the payload encoding. It should be set to application/vnd.in-toto+json.
+  string payload_type = 1;
+  // Payload is the base64-encoded Statement.
+  string payload = 2;
+  // Signatures should include at least one signature of the payload.
+  repeated Signature signatures = 3;
 }

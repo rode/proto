@@ -40,3 +40,12 @@ To fix multiple violations, use a another comment line. A list of rule names is 
 
 To add a new `protoc` plugin, add it under the `plugins` list in `buf.gen.yaml`. 
 Use the name without the `protoc-gen` prefix, e.g., `grpc-gateway` instead of `protoc-gen-grpc-gateway`. 
+
+### Add an External Protobuf Dependency
+
+1. Find the dependency in the [Buf Schema Registry](https://buf.build/explore)
+1. Add it under the `dep` list in `buf.yaml`
+1. Run `buf mod update` to update the `buf.lock` file
+
+Note that the commit sha in `buf.lock` corresponds to the registry's own Git mirror and not the 
+source repository. 
